@@ -1,10 +1,10 @@
 const teamMembers = [
 	{ name: "Code Savvy", role: "Founder" },
-	{ name: "Michael Steward", role: "Creative Director" },
+	{ name: "James Wilson", role: "Product Manager" },
 	{ name: "Emma Rodriguez", role: "Lead Developer" },
 	{ name: "Julia Gimmel", role: "UX Designer" },
 	{ name: "Lisa Anderson", role: "Marketing Manager" },
-	{ name: "James Wilson", role: "Product Manager" }
+	{ name: "Emily Kim", role: "Creative Director" },
 ];
 
 const cards = document.querySelectorAll(".card");
