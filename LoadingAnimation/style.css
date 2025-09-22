@@ -1,0 +1,136 @@
+/* BODY */
+body {
+  background: #231b26;
+}
+
+/* CONTENT */
+#content {
+  margin-left: -150px;
+  margin-top: -150px;
+  height: 300px;
+  width: 300px;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  background: transparent;
+  transform: perspective(500px);
+}
+
+/* FIRST */
+#first {
+  position: absolute;
+  height: 200px;
+  width: 200px;
+  background: transparent;
+  border: solid #ad85bc 5px;
+  left: 50%;
+  top: 50%;
+  margin-left: -100px;
+  margin-top: -100px;
+  transform: perspective(400px) rotateY(45deg);
+  -webkit-animation: first 5s infinite;
+  border-radius: 50%;
+}
+
+/* FIRST ANIMATION */
+@-webkit-keyframes first {
+  0% {transform: perspective(400px) rotateY(45deg);}
+  100% {transform: perspective(400px) rotateY(405deg);}
+}
+
+/* SECOND */
+#second {
+  position: absolute;
+  height: 200px;
+  width: 200px;
+  background: transparent;
+  border: solid #83658e 5px;
+  left: 50%;
+  top: 50%;
+  margin-left: -100px;
+  margin-top: -100px;
+  transform: perspective(400px) rotateY(0deg);
+  -webkit-animation: second 5s infinite;
+  border-radius: 50%;
+}
+
+/* SECOND ANIMATION */
+@-webkit-keyframes second {
+  0% {transform: perspective(400px) rotateY(0deg);}
+  100% {transform: perspective(400px) rotateY(360deg);}
+}
+
+/* THIRD */
+#third {
+  position: absolute;
+  height: 200px;
+  width: 200px;
+  background: transparent;
+  border: solid #54415b 5px;
+  left: 50%;
+  top: 50%;
+  margin-left: -100px;
+  margin-top: -100px;
+  transform: perspective(400px) rotateY(-45deg);
+  -webkit-animation: third 5s infinite;
+  border-radius: 50%;
+}
+
+/* THIRD ANIMATION */
+@-webkit-keyframes third {
+  0% {transform: perspective(400px) rotateY(-45deg);}
+  100% {transform: perspective(400px) rotateY(315deg);}
+}
+
+/* FOURTH */
+#fourth {
+  position: absolute;
+  height: 200px;
+  width: 200px;
+  background: transparent;
+  border: solid #332738 5px;
+  left: 50%;
+  top: 50%;
+  margin-left: -100px;
+  margin-top: -100px;
+  transform: perspective(400px) rotateY(90deg);
+  -webkit-animation: fourth 5s infinite;
+  border-radius: 50%;
+}
+
+/* FOURTH ANIMATION */
+@-webkit-keyframes fourth {
+  0% {transform: perspective(400px) rotateY(90deg);}
+  100% {transform: perspective(400px) rotateY(450deg);}
+}
+
+/* GLOW MORE BLURRY (OUTSIDE) */
+#glow1 {
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  background-color: #6d63b2;
+  left: 50%;
+  top: 50%;
+  margin-left: -20px;
+  margin-top: -20px;
+  z-index: -1;
+  border-radius: 50%;
+  filter: blur(20px);
+}
+
+/* GLOW LESS BLURRY (CENTER) */
+#glow2 {
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  background-color: #eab7ff;
+  left: 50%;
+  top: 50%;
+  margin-left: -20px;
+  margin-top: -20px;
+  z-index: -1;
+  filter: blur(12px);
+  opacity: .7;
+  border-radius: 50%;
+}
