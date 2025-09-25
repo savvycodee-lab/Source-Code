@@ -16,7 +16,7 @@
             background: #000;
         }
 
-        .button-40 {
+        .button-2 {
             --glow-color: rgb(217, 176, 255);
             --glow-spread-color: rgba(191, 123, 255, 0.781);
             --enhanced-glow-color: rgb(231, 206, 255);
@@ -37,7 +37,7 @@
             transition: all 0.3s;
         }
 
-        .button-40::after {
+        .button-2::after {
             pointer-events: none;
             content: "";
             position: absolute;
@@ -51,7 +51,7 @@
             transform: perspective(1.5em) rotateX(35deg) scale(1, .6);
         }
 
-        .button-40:hover {
+        .button-2:hover {
             color: var(--btn-color);
             background-color: var(--glow-color);
             box-shadow: 0 0 1em .25em var(--glow-color),
@@ -59,7 +59,7 @@
                 inset 0 0 .75em .25em var(--glow-color);
         }
 
-        .button-40:active {
+        .button-2:active {
             box-shadow: 0 0 0.6em .25em var(--glow-color),
                 0 0 2.5em 2em var(--glow-spread-color),
                 inset 0 0 .5em .25em var(--glow-color);
@@ -69,7 +69,7 @@
 
 <body>
     <!-- HTML !-->
-    <button class="button-40" role="button">
+    <button class="button-2" role="button">
         <span class="text">Button 2</span>
     </button>
 
