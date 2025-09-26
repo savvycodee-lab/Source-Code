@@ -1,0 +1,55 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(45deg, #000428, #005bea);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  color: #fff;
+}
+
+.card {
+  position: relative;
+  width: 340px;
+  height: 480px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  border-radius: 2rem;
+  color: #005bea;
+  background: white;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+  transition: transform 0.5s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  cursor: pointer;
+}
+
+.card:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: #005bea;
+  clip-path: circle(0% at 100% 100%);
+  transition: clip-path 0.9s ease-in-out;
+  z-index: 0;
+}
+
+.card:hover:before {
+  clip-path: circle(200% at 100% 100%);
+}
