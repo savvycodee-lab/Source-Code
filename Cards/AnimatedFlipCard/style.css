@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-size: 1em;
+  color: #666;
+  position: relative;
+  overflow-x: hidden;
+  font-family: 'Montserrat', sans-serif;
+}
+
+ul {
+  list-style: none;
+}
+
+img, picture {
+  max-width: 100%;
+  outline: none;
+  border: none;
+}
+audio, canvas, iframe, img, svg, video {
+  vertical-align: middle;
+}
+
+.col--right {
+  margin: 0 auto;
+  width: 100%;
+  padding: 2em 4em;
+}
+
+/* ======
+General Image Grid Styles
+===== */
+.grid {
+  text-align: justify;
+  padding: 4em 0 0em;
+}
+.grid:after {
+  content: '';
+  display: inline-block;
+  width: 100%;
+}
+
+/* ======
+3D Flipping Grid Images
+====== */
+.flip-container {
+  width: 30%;
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 0 4% 0;
+  -webkit-perspective: 1000px;
+  perspective: 1000px;
+}
+.flip-container:nth-of-type(1) figcaption {
+  background-color: #97CA3E;
+}
+.flip-container:nth-of-type(2) figcaption {
+  background-color: #ED6C59;
+}
+.flip-container:nth-of-type(3) figcaption {
+  background-color: #2299D3;
+}
+.flip-container:nth-of-type(4) figcaption {
+  background-color: #9880B8;
+}
+.flip-container:nth-of-type(5) figcaption {
+  background-color: #F6AC4B;
+}
+.flip-container:nth-of-type(6) figcaption {
+  background-color: #FDCE13;
+}
+.flip-container figure {
+  width: 100%;
+  height: 0;
+  padding-top: 100%;
+  margin: 0;
+  position: relative;
+  -webkit-transition: -webkit-transform .3s ease-out;
+  transition: -webkit-transform .3s ease-out;
+  transition: transform .3s ease-out;
+  transition: transform .3s ease-out, -webkit-transform .3s ease-out;
+  -webkit-perspective: 1000px;
+  perspective: 1000px;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+.flip-container figure img {
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.flip-container figure figcaption {
+  display: block;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  text-transform: uppercase;
+  text-align: center;
+  color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+}
+.flip-container figure figcaption p {
+  position: absolute;
+  top: 50%;
+  font-size: 1em;
+  width: 100%;
+  padding: 0 1em;
+  -webkit-transform: translateY(-75%);
+  transform: translateY(-75%);
+}
+
+
+
+.flip-container:hover figure, .flip-container.hover figure {
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+}
+
+@media all and (max-width: 500px) {
+  .flip-container p {
+    font-size: .7em !important;
+  }
+}
+@media all and (min-width: 62em) {
+  .flip-container figure figcaption p {
+    font-size: 1em;
+  }
+}
