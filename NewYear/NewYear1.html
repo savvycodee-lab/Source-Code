@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy New Year • 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --text: #f5f0e8;
+      --accent: #d4af78;
+      --accent-dark: #b8975e;
+      --gray: #777;
+      --glow: rgba(212, 175, 120, 0.2);
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .glow-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(ellipse at 50% 15%, var(--glow) 0%, transparent 75%);
+      z-index: -2;
+    }
+
+    .container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 5vw;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(5.5rem, 15vw, 12rem);
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      line-height: 0.82;
+      background: linear-gradient(135deg, #fff 10%, #e8d9c0 90%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.3rem;
+      text-shadow: 0 12px 60px rgba(0,0,0,0.75);
+    }
+
+    .subtitle { font-size: clamp(1.4rem, 5vw, 2rem); color: var(--accent); letter-spacing: 0.45em; text-transform: uppercase; font-weight: 400; margin: 1rem 0; }
+    .years     { font-size: clamp(1.6rem, 5.5vw, 2.6rem); color: var(--gray); letter-spacing: 0.7em; margin-bottom: 2.5rem; }
+
+    .greeting {
+      font-size: clamp(1.45rem, 4.2vw, 2rem);
+      max-width: 720px;
+      line-height: 1.75;
+      font-weight: 300;
+      color: #d8c9b5;
+      margin: 2rem 0 4rem;
+    }
+
+    .highlight { color: var(--accent); font-weight: 500; }
+
+    /* Main Interactive Tree */
+    .tree-wrap {
+      position: relative;
+      width: 340px;
+      height: 460px;
+      margin: 2rem auto 4rem;
+      cursor: pointer;
+      transition: transform 0.5s ease;
+    }
+    .tree-wrap:hover { transform: scale(1.05); }
+
+    .tree {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, #1a1a1a, #0f0f0f);
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      box-shadow: 0 25px 70px rgba(0,0,0,0.7);
+      transition: all 0.7s ease;
+    }
+    .tree.lit {
+      background: linear-gradient(to bottom, #2a2218, #1a140a);
+      box-shadow: 0 0 100px rgba(212,175,120,0.45);
+    }
+
+    .star {
+      position: absolute;
+      top: -12%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 5.2rem;
+      color: var(--accent);
+      text-shadow: 0 0 35px var(--accent);
+      opacity: 0;
+      transition: opacity 1.2s ease;
+    }
+    .tree.lit .star { opacity: 1; animation: pulse 5s infinite alternate; }
+    @keyframes pulse { 0%,100% { filter: brightness(1); } 50% { filter: brightness(2.4); } }
+
+    .light {
+      position: absolute;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 20px var(--accent), 0 0 35px rgba(212,175,120,0.7);
+      animation: twinkle 3.5s infinite alternate;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    .tree.lit .light { opacity: 1; }
+    .light:nth-child(1) { top:10%; left:48%; animation-delay:0s; }
+    .light:nth-child(2) { top:24%; left:18%; animation-delay:0.5s; }
+    .light:nth-child(3) { top:38%; right:15%; animation-delay:1s; }
+    .light:nth-child(4) { top:54%; left:35%; animation-delay:1.5s; }
+    .light:nth-child(5) { top:70%; right:28%; animation-delay:2s; }
+    .light:nth-child(6) { top:86%; left:50%; animation-delay:2.5s; }
+    @keyframes twinkle { 0%,100% { opacity:0.6; transform:scale(0.9); } 50% { opacity:1; transform:scale(1.2); } }
+
+    /* Bottom interactive decorations */
+    .decor-bar {
+      display: flex;
+      justify-content: center;
+      gap: clamp(2rem, 6vw, 5rem);
+      flex-wrap: wrap;
+      margin-top: 3rem;
+      padding: 1.5rem 0;
+    }
+
+    .decor-item {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      filter: drop-shadow(0 8px 20px rgba(0,0,0,0.5));
+    }
+    .decor-item:hover {
+      transform: translateY(-12px) scale(1.15);
+    }
+    .decor-item:active {
+      transform: translateY(-4px) scale(1.05);
+    }
+
+    .decor-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: all 0.5s ease;
+      opacity: 0.92;
+    }
+    .decor-item.clicked img {
+      transform: rotate(15deg) scale(1.2);
+      filter: brightness(1.4) drop-shadow(0 0 20px var(--accent));
+    }
+
+    /* Snow */
+    .snow { position:fixed; inset:0; pointer-events:none; z-index:-1; overflow:hidden; }
+    .snowflake {
+      position: absolute;
+      width: 5px; height: 5px;
+      background: rgba(245,235,225,0.9);
+      border-radius: 50%;
+      box-shadow: 0 0 12px rgba(255,245,230,0.8);
+      animation: fall linear forwards;
+    }
+    @keyframes fall {
+      to { transform: translateY(100vh) translateX(var(--drift, 0px)); opacity:0; }
+    }
+
+    footer {
+      margin-top: 6rem;
+      color: var(--gray);
+      font-size: 0.95rem;
+      letter-spacing: 0.15em;
+    }
+
+    @media (max-width: 680px) {
+      .tree-wrap { width:280px; height:380px; }
+      .decor-bar { gap: 3rem; }
+      .decor-item { width:70px; height:70px; }
+      h1 { font-size: 7.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glow-bg"></div>
+  <div class="snow" id="snow"></div>
+
+  <div class="container">
+    <h1>Happy New Year</h1>
+    <div class="subtitle">Warmest Wishes</div>
+    <div class="years">2025  •  2026</div>
+
+    <p class="greeting">
+      May this season surround you with <span class="highlight">peace</span>,<br>
+      fill your heart with <span class="highlight">joy</span>, and bring magic to every moment.
+    </p>
+
+    <!-- Central Interactive Tree -->
+    <div class="tree-wrap" id="mainTree" onclick="toggleMainTree()">
+      <div class="tree" id="tree">
+        <div class="star">✦</div>
+        <div class="light"></div><div class="light"></div><div class="light"></div>
+        <div class="light"></div><div class="light"></div><div class="light"></div>
+      </div>
+    </div>
+
+    <!-- Bottom interactive items: candy canes, snowman, small trees, gifts -->
+    <div class="decor-bar">
+      <div class="decor-item" onclick="interact(this)">
+        <img src="https://www.shutterstock.com/image-vector/christmas-candy-canes-stick-traditional-600nw-2192978201.jpg" alt="Candy Cane">
+      </div>
+      <div class="decor-item" onclick="interact(this)">
+        <img src="https://thumbs.dreamstime.com/b/simple-snowman-outline-minimalist-illustration-snowman-depicted-as-clean-black-outline-white-background-snowman-403106287.jpg" alt="Snowman">
+      </div>
+      <div class="decor-item" onclick="interact(this)">
+        <img src="https://thumbs.dreamstime.com/b/golden-christmas-tree-illustration-black-background-tree-has-sleek-glossy-appearance-star-top-luxurious-421620591.jpg" alt="Small Tree">
+      </div>
+      <div class="decor-item" onclick="interact(this)">
+        <img src="https://media.istockphoto.com/id/455316035/vector/red-gift-boxes-with-gold-bows-illustration.jpg?s=612x612&w=0&k=20&c=Bcnq3GydSbUUv4gtQwJCA_HmG6iLd4WNNSayjSEDf84=" alt="Gift Box">
+      </div>
+    </div>
+
+    <footer>With love & sparkle • December 2025</footer>
+  </div>
+
+  <script>
+    // Snow
+    function createSnowflake() {
+      const snow = document.getElementById('snow');
+      const flake = document.createElement('div');
+      flake.className = 'snowflake';
+      const size = Math.random() * 5 + 3;
+      flake.style.width = flake.style.height = size + 'px';
+      flake.style.left = Math.random() * 100 + 'vw';
+      flake.style.animationDuration = Math.random() * 14 + 16 + 's';
+      flake.style.opacity = Math.random() * 0.4 + 0.55;
+      const drift = (Math.random() - 0.5) * 160;
+      flake.style.setProperty('--drift', drift + 'px');
+      snow.appendChild(flake);
+      setTimeout(() => flake.remove(), 35000);
+    }
+    setInterval(createSnowflake, 400);
+    for(let i=0; i<18; i++) setTimeout(createSnowflake, i*700);
+
+    // Main tree toggle
+    function toggleMainTree() {
+      document.getElementById('tree').classList.toggle('lit');
+    }
+    setTimeout(() => document.getElementById('tree').classList.add('lit'), 3000);
+
+    // Bottom items interaction
+    function interact(el) {
+      el.classList.toggle('clicked');
+      setTimeout(() => el.classList.remove('clicked'), 1200);
+    }
+  </script>
+</body>
+</html>

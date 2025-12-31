@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>31st December - Cinematic Celebration</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <style>
+        :root {
+            --bg-dark: #050505;
+            --bg-deep: #0a0a1a;
+            --accent-gold: #ffd700;
+            --accent-glow: rgba(255, 215, 0, 0.6);
+            --text-white: #f0f0f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-white);
+            /* Prevent pull-to-refresh on mobile */
+            overscroll-behavior: none;
+        }
+
+        /* Container for the entire scene */
+        #stage {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at bottom center, #1a1a2e 0%, #000000 80%);
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        /* --- BACKGROUND LAYERS --- */
+        .layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        /* Stars */
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+        }
+        .star.twinkle {
+            animation: twinkle 4s infinite ease-in-out;
+        }
+
+        /* Aurora / Haze */
+        .aurora {
+            position: absolute;
+            bottom: -20%;
+            left: -20%;
+            width: 140%;
+            height: 60%;
+            background: linear-gradient(90deg, 
+                rgba(0, 255, 127, 0.0) 0%, 
+                rgba(0, 255, 255, 0.1) 25%, 
+                rgba(138, 43, 226, 0.15) 50%, 
+                rgba(255, 0, 128, 0.1) 75%, 
+                rgba(0, 0, 0, 0) 100%
+            );
+            filter: blur(60px);
+            opacity: 0.6;
+            mix-blend-mode: screen;
+            transform-origin: center bottom;
+        }
+
+        .aurora-2 {
+            bottom: -30%;
+            background: radial-gradient(ellipse at center, rgba(65, 105, 225, 0.2), transparent 70%);
+            filter: blur(80px);
+        }
+
+        /* Fog */
+        .fog {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 30vh;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            z-index: 5;
+        }
+
+        /* Shooting Star */
+        .shooting-star {
+            position: absolute;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,1));
+            opacity: 0;
+            transform: rotate(-45deg);
+            filter: drop-shadow(0 0 6px white);
+        }
+
+        /* --- FIREWORKS --- */
+        #fireworks-container {
+            z-index: 10;
+        }
+
+        .rocket {
+            position: absolute;
+            width: 3px;
+            height: 8px;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 0 10px #fff;
+            will-change: transform, opacity;
+        }
+
+        .spark {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            will-change: transform, opacity;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        #content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 20;
+            text-align: center;
+            width: 100%;
+            padding: 0 20px;
+            mix-blend-mode: overlay; /* Subtle blend with fireworks */
+            /* Ensure text is readable even with mix-blend */
+            text-shadow: 0 4px 20px rgba(0,0,0,0.8); 
+        }
+
+        /* To prevent blend mode from killing visibility, we duplicate content or use specific stacking context.
+           Let's stick to standard z-index for clarity, removed mix-blend on container to keep white crisp. */
+        #content {
+             mix-blend-mode: normal;
+        }
+
+        .main-title-wrapper {
+            overflow: hidden; /* For slide reveal */
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: #ffffff;
+            text-transform: uppercase;
+            line-height: 1;
+            margin: 0;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            /* Removed background-clip text as it hides moving letters */
+            white-space: nowrap;
+        }
+
+        .subtitle-wrapper {
+            margin-top: 10px;
+        }
+
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(0.9rem, 3vw, 1.5rem);
+            font-weight: 300;
+            letter-spacing: 0.4em;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            opacity: 0; /* JS will handle fade in */
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        /* Vignette/Grain for film look */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 50%, black 140%);
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .grain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            z-index: 99;
+            pointer-events: none;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.4; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="stage">
+        <!-- Parallax Background Layers -->
+        <div class="layer" id="stars-far"></div>
+        <div class="layer" id="stars-mid"></div>
+        <div class="layer" id="stars-near"></div>
+        
+        <!-- Atmosphere -->
+        <div class="layer aurora"></div>
+        <div class="layer aurora-2"></div>
+        <div class="layer" id="shooting-stars-container"></div>
+        
+        <!-- Fireworks Layer (Behind Text) -->
+        <div class="layer" id="fireworks-container"></div>
+
+        <!-- Content -->
+        <div id="content">
+            <div class="main-title-wrapper">
+                <h1 id="main-title">31 December</h1>
+            </div>
+            <div class="subtitle-wrapper">
+                <h2 id="subtitle">Happy New Year 2026 🎆</h2>
+            </div>
+        </div>
+
+        <!-- Foreground Ambience -->
+        <div class="fog"></div>
+        <div class="grain"></div>
+        <div class="overlay"></div>
+    </div>
+
+    <script>
+        // --- CONFIG ---
+        const STAGE = document.getElementById('stage');
+        const FW_CONTAINER = document.getElementById('fireworks-container');
+        const COLORS = ['#ff0040', '#ff00cc', '#9900ff', '#00ccff', '#00ffaa', '#ffdd00', '#ffffff'];
+        
+        // --- INITIALIZATION ---
+        
+        // 1. Generate Stars
+        function createStars(count, containerId, sizeRange, duration) {
+            const container = document.getElementById(containerId);
+            for(let i=0; i<count; i++) {
+                const star = document.createElement('div');
+                star.className = Math.random() > 0.8 ? 'star twinkle' : 'star';
+                const size = Math.random() * (sizeRange[1] - sizeRange[0]) + sizeRange[0];
+                
+                gsap.set(star, {
+                    width: size,
+                    height: size,
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight
+                });
+                
+                container.appendChild(star);
+
+                // Parallax drift
+                gsap.to(star, {
+                    y: `-=${Math.random() * 100 + 50}`,
+                    duration: duration,
+                    repeat: -1,
+                    ease: "none",
+                    modifiers: {
+                        y: gsap.utils.unitize(y => parseFloat(y) % window.innerHeight) // Wrap around
+                    }
+                });
+            }
+        }
+
+        createStars(100, 'stars-far', [1, 2], 60);
+        createStars(50, 'stars-mid', [2, 3], 45);
+        createStars(20, 'stars-near', [3, 4], 30);
+
+        // 2. Aurora Animation
+        gsap.to('.aurora', {
+            rotation: 5,
+            scale: 1.1,
+            duration: 15,
+            yoyo: true,
+            repeat: -1,
+            ease: "sine.inOut"
+        });
+        
+        gsap.to('.aurora-2', {
+            x: '10%',
+            duration: 20,
+            yoyo: true,
+            repeat: -1,
+            ease: "sine.inOut"
+        });
+
+        // 3. Text Reveal Animation
+        // Split text helper (basic version to avoid plugins)
+        const title = document.getElementById('main-title');
+        const text = title.innerText;
+        title.innerHTML = text.split("").map(char => `<span style="display:inline-block">${char === " " ? "&nbsp;" : char}</span>`).join("");
+        
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+        tl.from("#main-title span", {
+            y: 100,
+            opacity: 0,
+            rotationX: -90,
+            stagger: 0.05,
+            duration: 1.5,
+            delay: 0.5
+        })
+        .to("#main-title span", {
+            textShadow: "0 0 40px rgba(255,255,255,0.8)",
+            duration: 2,
+            yoyo: true,
+            repeat: -1,
+            stagger: {
+                each: 0.1,
+                from: "random"
+            }
+        }, "-=0.5")
+        .from("#subtitle", {
+            y: 20,
+            opacity: 0,
+            letterSpacing: "0.8em", // animate spacing
+            duration: 1.5
+        }, "-=1.5");
+
+        // 4. Shooting Stars System
+        function launchShootingStar() {
+            const star = document.createElement('div');
+            star.className = 'shooting-star';
+            document.getElementById('shooting-stars-container').appendChild(star);
+            
+            const startY = Math.random() * window.innerHeight * 0.5;
+            const startX = Math.random() * window.innerWidth;
+            
+            gsap.set(star, { x: startX, y: startY });
+            
+            gsap.to(star, {
+                x: startX - 300,
+                y: startY + 300,
+                opacity: 0,
+                duration: 1 + Math.random(),
+                ease: "power1.in",
+                onStart: () => { gsap.to(star, { opacity: 1, duration: 0.1, yoyo: true, repeat: 1 }) },
+                onComplete: () => star.remove()
+            });
+
+            // Randomize next launch
+            setTimeout(launchShootingStar, Math.random() * 4000 + 2000);
+        }
+        setTimeout(launchShootingStar, 2000);
+
+        // 5. Fireworks System
+        function createFirework() {
+            const startX = Math.random() * window.innerWidth * 0.8 + window.innerWidth * 0.1;
+            const endY = Math.random() * window.innerHeight * 0.5 + window.innerHeight * 0.1; // Explode in top 60%
+            
+            const rocket = document.createElement('div');
+            rocket.className = 'rocket';
+            FW_CONTAINER.appendChild(rocket);
+
+            gsap.set(rocket, { x: startX, y: window.innerHeight, opacity: 1 });
+
+            gsap.to(rocket, {
+                y: endY,
+                duration: 1 + Math.random() * 0.5,
+                ease: "power2.out",
+                onComplete: () => {
+                    explode(startX, endY);
+                    rocket.remove();
+                }
+            });
+        }
+
+        function explode(x, y) {
+            const particleCount = 40; // Optimization for mobile
+            const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+            
+            // Camera Shake on explosion (subtle)
+            if(Math.random() > 0.7) {
+                gsap.fromTo("#stage", 
+                    { x: -2, y: 2 }, 
+                    { x: 0, y: 0, duration: 0.1, clearProps: "all", repeat: 3, yoyo: true }
+                );
+            }
+
+            // Create Sparkle Flash
+            const flash = document.createElement('div');
+            Object.assign(flash.style, {
+                position: 'absolute', left: x+'px', top: y+'px',
+                width: '10px', height: '10px', background: 'white',
+                borderRadius: '50%', boxShadow: `0 0 40px 20px ${color}`, opacity: 1
+            });
+            FW_CONTAINER.appendChild(flash);
+            gsap.to(flash, { opacity: 0, scale: 3, duration: 0.3, onComplete: () => flash.remove() });
+
+            // Create Particles
+            for (let i = 0; i < particleCount; i++) {
+                const p = document.createElement('div');
+                p.className = 'spark';
+                p.style.backgroundColor = color;
+                p.style.boxShadow = `0 0 6px ${color}`;
+                FW_CONTAINER.appendChild(p);
+
+                // Physics simulation
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 150 + 50; // Distance
+                const duration = Math.random() * 1 + 0.8;
+                
+                // Set initial position
+                gsap.set(p, { x: x, y: y, scale: Math.random() * 0.8 + 0.5 });
+
+                // Explode outwards
+                gsap.to(p, {
+                    x: x + Math.cos(angle) * velocity,
+                    y: y + Math.sin(angle) * velocity + 100, // +100 acts as gravity
+                    opacity: 0,
+                    scale: 0,
+                    duration: duration,
+                    ease: "power3.out",
+                    onComplete: () => p.remove()
+                });
+            }
+        }
+
+        // Auto-launch fireworks loop
+        function fireworkLoop() {
+            // Launch 1 to 3 fireworks
+            const count = Math.floor(Math.random() * 2) + 1;
+            for(let i=0; i<count; i++) {
+                setTimeout(createFirework, i * 300);
+            }
+            
+            // Next loop delay
+            setTimeout(fireworkLoop, Math.random() * 2000 + 800);
+        }
+
+        // Start fireworks after initial delay
+        setTimeout(fireworkLoop, 1500);
+
+        // Resize handler
+        window.addEventListener('resize', () => {
+           // Basic resize handling if needed, CSS covers most
+        });
+
+    </script>
+</body>
+</html>

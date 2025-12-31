@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>31st December - Ethereal Edition</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;900&family=Playfair+Display:ital,wght@1,400&family=Montserrat:wght@200;600&display=swap" rel="stylesheet">
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <style>
+        :root {
+            --bg-dark: #020205;
+            --gold-primary: #ffc400;
+            --gold-light: #ffeb99;
+            --purple-haze: #2a0a3b;
+            --blue-depth: #0a1530;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            overscroll-behavior: none;
+        }
+
+        #stage {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        /* --- BACKGROUND: NEBULA & CLOUDS --- */
+        .nebula-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.6;
+        }
+
+        .nebula {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            animation: floatNebula 20s infinite alternate ease-in-out;
+        }
+
+        .n1 { 
+            top: -20%; left: -10%; width: 60vw; height: 60vw; 
+            background: radial-gradient(circle, var(--purple-haze), transparent 70%); 
+            animation-duration: 25s;
+        }
+        .n2 { 
+            bottom: -20%; right: -10%; width: 70vw; height: 70vw; 
+            background: radial-gradient(circle, var(--blue-depth), transparent 70%); 
+            animation-duration: 30s;
+            animation-direction: alternate-reverse;
+        }
+        .n3 {
+            top: 40%; left: 40%; width: 40vw; height: 40vw;
+            background: radial-gradient(circle, rgba(255, 60, 0, 0.05), transparent 60%);
+            mix-blend-mode: screen;
+            animation-duration: 15s;
+        }
+
+        @keyframes floatNebula {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, 50px) scale(1.1); }
+        }
+
+        /* --- PARTICLES: STARS & EMBERS --- */
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        .ember {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--gold-primary);
+            border-radius: 50%;
+            box-shadow: 0 0 6px var(--gold-primary);
+            opacity: 0;
+            bottom: -10px;
+            z-index: 5;
+        }
+
+        /* --- FIREWORKS --- */
+        #fireworks-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .rocket {
+            position: absolute;
+            width: 3px;
+            height: 15px; /* Longer tail */
+            background: linear-gradient(to bottom, #fff, transparent);
+            border-radius: 4px;
+            will-change: transform;
+        }
+
+        .spark {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            will-change: transform, opacity;
+        }
+
+        .trail-dot {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            pointer-events: none;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        #content-wrapper {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+            mix-blend-mode: normal;
+        }
+
+        .text-group {
+            position: relative;
+            text-align: center;
+            perspective: 500px;
+        }
+
+        /* The Big "31" Background */
+        .bg-number {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            font-family: 'Cinzel', serif;
+            font-size: min(40vw, 60vh);
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.03);
+            z-index: -1;
+            pointer-events: none;
+            letter-spacing: -0.05em;
+        }
+
+        .main-line {
+            display: block;
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            color: #fff;
+            text-transform: uppercase;
+            position: relative;
+            white-space: nowrap;
+            /* text-shadow: 0 0 20px rgba(0,0,0,0.5); */
+        }
+
+        .accent-line {
+            display: block;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: clamp(1.2rem, 3vw, 2.5rem);
+            color: var(--gold-light);
+            margin-top: 1vh;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+            opacity: 0;
+        }
+
+        /* Vignette & Grain */
+        .vignette {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, transparent 40%, #000 130%);
+            z-index: 50;
+            pointer-events: none;
+        }
+        
+        .noise {
+            position: absolute;
+            inset: 0;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            z-index: 49;
+            pointer-events: none;
+        }
+
+        /* Flash Effect */
+        #flash-overlay {
+            position: absolute;
+            inset: 0;
+            background: white;
+            opacity: 0;
+            z-index: 100;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="stage">
+        <!-- Dynamic Background -->
+        <div class="nebula-container">
+            <div class="nebula n1"></div>
+            <div class="nebula n2"></div>
+            <div class="nebula n3"></div>
+        </div>
+
+        <div id="stars-container"></div>
+        <div id="embers-container"></div>
+        <div id="fireworks-container"></div>
+
+        <!-- Typography -->
+        <div id="content-wrapper">
+            <div class="bg-number" id="bg-num">31</div>
+            <div class="text-group">
+                <div class="main-line" id="main-text">31 DECEMBER</div>
+                <div class="accent-line" id="sub-text">Happy New Year 2026</div>
+            </div>
+        </div>
+
+        <!-- Ambience -->
+        <div class="vignette"></div>
+        <div class="noise"></div>
+        <div id="flash-overlay"></div>
+    </div>
+
+    <script>
+        // --- CONFIGURATION ---
+        const STAGE = document.getElementById('stage');
+        const FW_CONTAINER = document.getElementById('fireworks-container');
+        const COLORS = [
+            '#FFD700', // Gold
+            '#FFFFFF', // White
+            '#E6E6FA', // Lavender
+            '#FF4500', // Orange Red (Sunset)
+            '#00CED1'  // Dark Turquoise (Contrast)
+        ];
+
+        // --- 1. AMBIENCE (Stars & Embers) ---
+        
+        // Stars
+        function initStars() {
+            const container = document.getElementById('stars-container');
+            for(let i=0; i<80; i++) {
+                const s = document.createElement('div');
+                s.className = 'star';
+                const size = Math.random() * 2;
+                gsap.set(s, {
+                    width: size, height: size,
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight,
+                    opacity: Math.random() * 0.7 + 0.2
+                });
+                container.appendChild(s);
+                
+                // Twinkle
+                gsap.to(s, {
+                    opacity: 0.1,
+                    duration: Math.random() * 2 + 1,
+                    yoyo: true,
+                    repeat: -1,
+                    ease: "sine.inOut"
+                });
+            }
+        }
+
+        // Rising Embers (The "Fire" look)
+        function spawnEmber() {
+            const container = document.getElementById('embers-container');
+            const e = document.createElement('div');
+            e.className = 'ember';
+            container.appendChild(e);
+
+            const startX = Math.random() * window.innerWidth;
+            
+            gsap.fromTo(e, 
+                { x: startX, y: window.innerHeight + 10, opacity: 0, scale: 0.5 },
+                {
+                    y: -100,
+                    x: startX + (Math.random() - 0.5) * 200, // Drift
+                    opacity: Math.random() * 0.6 + 0.2,
+                    scale: 0,
+                    duration: Math.random() * 5 + 4,
+                    ease: "power1.out",
+                    onStart: () => gsap.to(e, { opacity: 1, duration: 0.5 }), // fade in quickly
+                    onComplete: () => e.remove()
+                }
+            );
+
+            setTimeout(spawnEmber, Math.random() * 200);
+        }
+
+        // --- 2. TEXT REVEAL SEQUENCE ---
+        
+        function playIntro() {
+            const tl = gsap.timeline();
+
+            // Setup text split
+            const mainText = document.getElementById('main-text');
+            mainText.innerHTML = mainText.textContent.split('').map(char => 
+                `<span style="display:inline-block; opacity:0; transform-origin:50% 50%">${char === ' ' ? '&nbsp;' : char}</span>`
+            ).join('');
+
+            // Sequence
+            tl.addLabel("start")
+            
+            // Background Number Fade In
+            .fromTo("#bg-num", 
+                { opacity: 0, scale: 1.2 }, 
+                { opacity: 0.05, scale: 1, duration: 3, ease: "power2.out" }, "start"
+            )
+
+            // Main Text "Zoom Out" Effect
+            .fromTo("#main-text span", 
+                { z: 500, opacity: 0, scale: 3, filter: "blur(10px)" },
+                { 
+                    z: 0, opacity: 1, scale: 1, filter: "blur(0px)",
+                    duration: 1.5, 
+                    stagger: { amount: 0.5, from: "center" },
+                    ease: "expo.out"
+                }, "start+=0.5"
+            )
+
+            // Subtitle Slide Up
+            .fromTo("#sub-text", 
+                { y: 30, opacity: 0 },
+                { y: 0, opacity: 1, duration: 1.5, ease: "power2.out" }, "-=0.8"
+            );
+
+            // Continuous Floating for Text Group
+            gsap.to(".text-group", {
+                y: -10,
+                rotationX: 2,
+                duration: 4,
+                yoyo: true,
+                repeat: -1,
+                ease: "sine.inOut"
+            });
+        }
+
+        // --- 3. PHYSICS FIREWORKS ---
+
+        function createRocket() {
+            const startX = Math.random() * window.innerWidth * 0.6 + window.innerWidth * 0.2;
+            const endY = window.innerHeight * 0.2 + Math.random() * window.innerHeight * 0.3;
+            
+            const rocket = document.createElement('div');
+            rocket.className = 'rocket';
+            FW_CONTAINER.appendChild(rocket);
+
+            gsap.set(rocket, { x: startX, y: window.innerHeight, scale: 1 });
+
+            // Launch Tween
+            const tl = gsap.timeline({
+                onComplete: () => {
+                    explode(startX, endY);
+                    rocket.remove();
+                }
+            });
+
+            tl.to(rocket, {
+                y: endY,
+                duration: 1.2,
+                ease: "power2.out" // Decelerate as it goes up
+            });
+        }
+
+        function explode(x, y) {
+            const particles = 50;
+            const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+            
+            // Flash Effect on Screen
+            gsap.fromTo("#flash-overlay", 
+                { opacity: 0.15, background: color }, 
+                { opacity: 0, duration: 0.3, ease: "power2.out" }
+            );
+
+            // Explosion Core
+            for(let i=0; i<particles; i++) {
+                const p = document.createElement('div');
+                p.className = 'spark';
+                p.style.backgroundColor = color;
+                p.style.boxShadow = `0 0 10px ${color}`;
+                FW_CONTAINER.appendChild(p);
+
+                // Physics
+                const angle = Math.random() * Math.PI * 2;
+                // Distribute velocity to create a sphere shape roughly
+                const vel = Math.random() * 150 + 60; 
+                
+                const velocityX = Math.cos(angle) * vel;
+                const velocityY = Math.sin(angle) * vel;
+
+                gsap.set(p, { x: x, y: y, scale: Math.random() * 1 + 0.5 });
+
+                // Animate Particle with Gravity
+                gsap.to(p, {
+                    x: `+=${velocityX}`,
+                    y: `+=${velocityY + 200}`, // +200 simulates gravity pulling down
+                    opacity: 0,
+                    scale: 0,
+                    duration: Math.random() * 1 + 1, // 1-2s duration
+                    ease: "power2.out", // explode fast, then slow down
+                    onComplete: () => p.remove()
+                });
+            }
+
+            // Create "Ghost" smoke/haze ring
+            const ring = document.createElement('div');
+            Object.assign(ring.style, {
+                position: 'absolute', left: x+'px', top: y+'px',
+                width: '10px', height: '10px', 
+                border: `2px solid ${color}`, borderRadius: '50%',
+                opacity: 0.8, pointerEvents: 'none'
+            });
+            FW_CONTAINER.appendChild(ring);
+            gsap.to(ring, {
+                width: 300, height: 300, 
+                x: -145, y: -145, // center it
+                opacity: 0,
+                duration: 0.8,
+                ease: "circ.out",
+                onComplete: () => ring.remove()
+            });
+        }
+
+        // --- LOOP CONTROL ---
+        function startFireworksLoop() {
+            createRocket();
+            // Random interval between 0.8s and 2.5s
+            setTimeout(startFireworksLoop, Math.random() * 1700 + 800);
+        }
+
+        // --- INIT ---
+        window.addEventListener('load', () => {
+            initStars();
+            spawnEmber();
+            playIntro();
+            setTimeout(startFireworksLoop, 2000);
+        });
+
+    </script>
+</body>
+</html>

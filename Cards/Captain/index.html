@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Captain</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 🧭 Header -->
+<header class="header">
+  <a href="https://turbokit.io/" target="_blank" class="made" aria-label="The fastest website template" data-microtip-position="top" role="tooltip">
+    <div class="by">MADE BY</div>
+    <div class="made-logo">
+      <img src="https://i.imgur.com/aNnuxjo.png" alt="logo" class="logo-img" draggable="false">
+      <div class="logo-text">CodeSavvy</div>
+    </div>
+  </a>
+</header>
+
+<div class="info to">
+  <div class="info-content">
+    <div class="weather">
+      <span class="weather-icon iconify" data-icon="famicons:cloudy-night"></span>
+      23° Cloudy
+    </div>
+    <div class="arr">
+      Arriving Today 8:40PM
+    </div>
+  </div>
+</div>
+
+<div class="info from">
+  <div class="info-content">
+    <div class="weather">
+      <span class="weather-icon iconify" data-icon="material-symbols:nights-stay"></span>
+      34° Clear
+    </div>
+    <div class="arr">
+      Departed Today 3:20PM
+    </div>
+  </div>
+</div>
+
+<small class="small">
+  <span class="captin iconify" data-icon="noto:pilot-light-skin-tone"></span>
+
+  <span class="small-text">
+    Tap to hear the captain
+  </span>
+</small>
+
+<div class="card-wrap">
+  <img src="https://i.imgur.com/NtaVpzy.png" alt="" class="thumbnail">
+  <div class="card pointer">
+
+    <div class="card-content">
+      <div class="border"></div>
+
+      <div class="blob"></div>
+      <div class="top">
+        <div class="logo-wrap">
+          <img src="https://cdn.brandfetch.io/idZKewuK9S/theme/light/logo.svg?c=1dxbfHSJFAPEGdCLU4o5B" class="logo" alt="" />
+        </div>
+
+        <div class="right">
+
+          <div class="on">
+            <span class="check iconify" data-icon="icon-park-solid:check-one"></span>
+
+            <div class="text">On Time</div>
+          </div>
+          <div class="flight">
+            <div class="num">QR1399</div>
+          </div>
+        </div>
+      </div>
+      <div class="mid">
+        <div class="loc">
+          <div class="box from">
+            <div class="label">
+              <span class="sign iconify" data-icon="tabler:plane-departure"></span>from
+            </div>
+            <div class="line">
+              <span class="iconify flag" data-icon="circle-flags:qa"></span>
+              <div class="code">DOH</div>
+            </div>
+            <div class="country">Qatar</div>
+            <img src="https://cdn.jsdelivr.net/gh/ouyahama/cdn@main/qatarm.svg" class="map" />
+          </div>
+          <div class="dur">
+            <div class="duration">
+              <svg width="100" viewBox="-40 -10 700 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 143C100.5 38.3333 356.3 -108.2 607.5 143" class="white" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="bevel" stroke-dasharray="25 25" />
+                <path class="green" d="M4 143C101 38.5 321.5 -78.4999 543 87" stroke="#00FF77" stroke-width="20" stroke-miterlimit="16" stroke-linecap="round" />
+              </svg>
+
+            </div>
+            <div class="meta">
+              <div class="time">5h 20min</div>
+            </div>
+            <div class="min">
+              <div class="dot"></div>
+              ETA&nbsp;
+              <span class="land-time">17&nbsp;</span>MIN
+            </div>
+          </div>
+          <div class="box to pointer">
+
+            <div class="label">
+              <span class="sign iconify" data-icon="tabler:plane-arrival"></span>to
+            </div>
+            <div class="line">
+              <span class="flag iconify" data-icon="circle-flags:tn"></span>
+              <div class="code">TUN</div>
+            </div>
+            <div class="country">Tunisia</div>
+            <img src="https://cdn.jsdelivr.net/gh/ouyahama/cdn@main/tun.svg" alt="" class="map" />
+          </div>
+        </div>
+        <div class="stat">
+
+          <div class="times">
+
+            <div class="speed">
+              <div>
+                <span class="speed-label">
+                  <span class="icon iconify" data-icon="material-symbols:speed"></span>
+                  Speed</span>
+              </div>
+              <div class="speed-box">
+                <span class="speed-value">1294</span>
+                <span class="speed-unit">KM/H</span>
+              </div>
+
+            </div>
+
+            <div class="speed">
+              <div>
+                <span class="speed-label">
+                  <span class="icon iconify" data-icon="material-symbols-light:altitude-rounded"></span>
+                  Altitude</span>
+              </div>
+              <div class="speed-box">
+                <span class="speed-value altitude-value"></span>
+                <span class="speed-unit">METER</span>
+              </div>
+
+            </div>
+
+            <div class="speed">
+              <div>
+                <span class="speed-label">
+
+                  <span class="iconify" data-icon="radix-icons:angle"></span>
+                  Pitch</span>
+              </div>
+              <div class="speed-box">
+                <span class="speed-value pitch-value">3</span>
+                <span class="speed-unit">°</span>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+        <div class="plane">
+          <canvas id="plane"></canvas>
+          <div class="aircraft">
+            <div class="aircraft-logo">
+              <div class="aircraft-label">
+
+                <span class="iconify" data-icon="el:plane"></span>
+                Aircraft
+              </div>
+
+            </div>
+            <div class="type">
+              <span class="iconify" data-icon="simple-icons:boeing"></span>
+              Boeing 787-9 Dreamliner
+            </div>
+          </div>
+
+          <img src="https://cdn.jsdelivr.net/gh/ouyahama/cdn/cloud.png" class="cloud" />
+        </div>
+        <div class="foot">
+
+          <div class="item">
+            <img src="https://i.imgur.com/LMr8kX8.png" alt="" class="item-hover privilege">
+            <div class="wrap">
+              <span class="data"><span class="icon iconify" data-icon="solar:medal-star-bold-duotone"></span>Class</span>
+              <span class="val reveal">Business</span>
+            </div>
+          </div>
+
+          <div class="item">
+            <img src="https://i.imgur.com/t5xGveQ.png" alt="" class="item-hover">
+
+            <div class="wrap">
+              <span class="data"><span class="icon iconify" data-icon="ph:seat-fill"></span>Seat</span>
+              <span class="val reveal">3A</span>
+            </div>
+          </div>
+          <div class="item">
+            <div class="wrap">
+              <span class="data"><span class="icon iconify" data-icon="zondicons:travel-case"></span>Luggage</span>
+              <span class="val reveal">2</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="features">
+        <div class="feature">
+          <span class="iconify wifi-icon" data-icon="material-symbols:wifi-rounded"></span>
+          WIFI ON
+        </div>
+
+        <div class="feature">
+          <span class="iconify belt-icon" data-icon="ph:belt-fill"></span>
+          fasten seatbelt
+        </div>
+      </div>
+
+      <div id="wave"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<button class="reload" onclick="window.history.go(0)">
+
+  <span class="iconify arrows" data-icon="ci:arrows-reload-01"></span>
+
+  reload</button>
+
+<!-- 📣 Footer -->
+<footer class="footer">
+  <a class="follow" href="https://x.com/turbokitHQ" target="_blank">
+    <div class="by">MORE LIKE THIS?</div>
+    <div class="follow-x">
+      <div class="follow-logo">
+        <span class="iconify" data-icon="line-md:twitter-x"></span>
+      </div>
+      <div class="follow-text">
+        <div class="follow-us">
+          follow us
+        </div>
+        <div class="follow-handle">@turbokitHQ</div>
+      </div>
+    </div>
+  </a>
+</footer>
+<script src="index.js"></script>
+</body>
+</html>
